@@ -42,44 +42,44 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(ssd1306_i2c C CXX ASM)
+project(Projeto_Final C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(ssd1306_i2c ssd1306_i2c.c inc/ssd1306_i2c.c)
+add_executable(Projeto_Final Projeto_Final.c inc/Projeto_Final.c)
 
-pico_set_program_name(ssd1306_i2c "ssd1306_i2c")
-pico_set_program_version(ssd1306_i2c "0.1")
+pico_set_program_name(Projeto_Final "Projeto_Final")
+pico_set_program_version(Projeto_Final "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(ssd1306_i2c 0)
-pico_enable_stdio_usb(ssd1306_i2c 1)
+pico_enable_stdio_uart(Projeto_Final 0)
+pico_enable_stdio_usb(Projeto_Final 1)
 
 # Add the standard library to the build
-target_link_libraries(ssd1306_i2c
+target_link_libraries(Projeto_Final
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(ssd1306_i2c PRIVATE
+target_include_directories(Projeto_Final PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(ssd1306_i2c 
+target_link_libraries(Projeto_Final 
         hardware_i2c
         )
 
 # Add the standard library to the build
 
-    target_link_libraries(ssd1306_i2c
+    target_link_libraries(Projeto_Final
     pico_stdlib    
     pico_cyw43_arch_lwip_threadsafe_background
     )
 
-pico_add_extra_outputs(ssd1306_i2c)
+pico_add_extra_outputs(Projeto_Final)
 
 
 
