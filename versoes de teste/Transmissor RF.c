@@ -1,53 +1,28 @@
-#include "pico/stdlib.h"
-#include "hardware/gpio.h"
-#include "pico/cyw43_arch.h"
-#include "lwip/tcp.h"
 #include <stdio.h>
+#include "pico/stdlib.h"
+#include "pico/cyw43_arch.h"
+#include "lwip/pbuf.h"
+#include "lwip/udp.h"
+#include "lwip/ip_addr.h"
 
-#define RAIN_SENSOR_PIN 15  // // Pino do sensor de chuva (simulado com botão)
-#define RF_TRANSMITTER_PIN 2  // Pino do transmissor RF
+#define SERVER_IP "192.168.4.2" // IP do receptor
+#define SERVER_PORT 1234        // Porta UDP do receptor
 
-static struct tcp_pcb *server_pcb;
+void send_udp_message(const char *message) {
+    struct udp_pcb *udp;
+    struct pbuf *p;
 
-// Simula a transmissão de um código RF
-void send_rf_signal() {
-    printf("Enviando o sinal RF para fechar o teto retratil automatico\n");
+    udp = udp_new();
+    ip_addr_t dest;
+    ip4addr_aton(SERVER_IP, &dest);
 
-    for (int i = 0; i < 10; i++) {  // Repetição para garantir recepção
-        gpio_put(RF_TRANSMITTER_PIN, 1);
-        sleep_us(350);
-        gpio_put(RF_TRANSMITTER_PIN, 0);
-        sleep_us(350);
+    p = pbuf_alloc(PBUF_TRANSPORT, strlen(message), PBUF_RAM);
+    if (p != NULL) {
+        memcpy(p->payload, message, strlen(message));
+        udp_sendto(udp, p, &dest, SERVER_PORT);
+        pbuf_free(p);
     }
-}
-
-// Função para processar requisições HTTP da Alexa
-static err_t http_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
-    if (!p) {
-        tcp_close(tpcb);
-        return ERR_OK;
-    }
-
-    char *request = (char *)p->payload;
-    printf("Requisição HTTP recebida: %s\n", request);
-
-    if (strstr(request, "GET /fechar")) {
-        send_rf_signal();
-        tcp_write(tpcb, "HTTP/1.1 200 OK\r\n\r\nTeto fechado via RF!", 42, 1);
-    } else {
-        tcp_write(tpcb, "HTTP/1.1 404 Not Found\r\n\r\n", 26, 1);
-    }
-
-    pbuf_free(p);
-    return ERR_OK;
-}
-
-// Função para iniciar o servidor HTTP
-void http_server_init() {
-    server_pcb = tcp_new();
-    tcp_bind(server_pcb, IP_ADDR_ANY, 80);
-    server_pcb = tcp_listen(server_pcb);
-    tcp_accept(server_pcb, http_server_recv);
+    udp_remove(udp);
 }
 
 int main() {
@@ -55,27 +30,13 @@ int main() {
     cyw43_arch_init();
     cyw43_arch_enable_sta_mode();
 
-    // Conectar ao Wi-Fi
-    cyw43_arch_wifi_connect_timeout_ms("SSID", "SENHA", CYW43_AUTH_WPA2_MIXED_PSK, 10000);
-
-    gpio_init(RAIN_SENSOR_PIN);
-    gpio_set_dir(RAIN_SENSOR_PIN, GPIO_IN);
-    gpio_pull_up(RAIN_SENSOR_PIN);
-
-    gpio_init(RF_TRANSMITTER_PIN);
-    gpio_set_dir(RF_TRANSMITTER_PIN, GPIO_OUT);
-
-    http_server_init();
-    printf("Servidor HTTP rodando...\n");
+    printf("Transmissor iniciado\n");
 
     while (true) {
-        if (gpio_get(RAIN_SENSOR_PIN) == 0) {  // Sensor detecta chuva
-            printf("Tempo chuvoso!\n")
-            printf("Enviando o sinal RF...\n");")
-            send_rf_signal();
-        } else {
-            printf("Tempo ensolarado!.\n");
-        }
-        sleep_ms(1000);
+        send_udp_message("FECHAR"); // Simula o envio do comando
+        printf("Enviado: FECHAR\n");
+        sleep_ms(5000); // Espera 5 segundos antes de enviar o próximo comando
     }
+
+    return 0;
 }
