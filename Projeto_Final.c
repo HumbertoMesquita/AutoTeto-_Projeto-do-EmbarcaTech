@@ -83,7 +83,7 @@ static err_t http_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, e
     }
 
     char *request = (char *)p->payload;
-    printf("📡 Requisição HTTP recebida: %s\n", request);
+    printf("Requisição HTTP recebida: %s\n", request);
 
     if (strstr(request, "GET /fechar")) {
         atualizar_teto(true);
