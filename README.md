@@ -14,13 +14,11 @@ O **AutoTeto** é um sistema de automação para **abertura e fechamento de telh
 - **Comunicação RF 433MHz**: Envia comandos sem fio ao motor.
 
 ## 🛠️ Hardware Utilizado
-- Raspberry Pi Pico W
-- BitDogLab
+- BitDogLab (Raspberry Pi Pico W)
 - LED RGB (GPIO 11, 12, 13)
 - Botões físicos (GPIO 5, 6)
 - Sensor de Chuva YL-83 (GPIO 4)
 - Módulo RF 433MHz (GPIO 17)
-- Fonte de Alimentação 5V
 
 ## 🔬 Como Funciona
 1. **Inicialização**: Configura os GPIOs, LEDs e Wi-Fi.
@@ -32,16 +30,6 @@ O **AutoTeto** é um sistema de automação para **abertura e fechamento de telh
    - **Wi-Fi**: Comandos via navegador.
 4. **Movimento**: LED azul pisca por **3 segundos** durante a movimentação.
 
-## 🛠️ Como Instalar e Rodar
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/AutoTeto.git
-   cd AutoTeto
-   ```
-2. Compile o código para o Raspberry Pi Pico W.
-3. Grave o firmware `.uf2` no Pico W.
-4. Conecte-se ao Wi-Fi e acesse pelo navegador o **IP do Pico W**.
-5. Teste os botões e o sensor de chuva para verificação.
 
 ## 📂 Estrutura do Projeto
 ```
@@ -64,8 +52,8 @@ O **AutoTeto** é um sistema de automação para **abertura e fechamento de telh
 1. Conecte-se à mesma rede Wi-Fi do **Raspberry Pi Pico W**.
 2. Descubra o **IP do Pico W** (exibido no terminal).
 3. Acesse pelo navegador:
-   - **Abrir o teto**: `http://<IP_DO_PICO_W>/abrir`
-   - **Fechar o teto**: `http://<IP_DO_PICO_W>/fechar`
+   - **Abrir o teto**: `http://<IP_DO_PICO>/abrir`
+   - **Fechar o teto**: `http://<IP_DO_PICO>/fechar`
 
 ## 💻 Tecnologias Utilizadas
 - Linguagem C
@@ -77,7 +65,3 @@ O **AutoTeto** é um sistema de automação para **abertura e fechamento de telh
 
 ## 📚 Licença
 Este projeto está licenciado sob a **MIT License**.
-
-## 💪 Contribuições
-Contribuições são bem-vindas! Caso encontre bugs ou tenha sugestões, abra uma **issue** ou faça um **pull request**.
-
