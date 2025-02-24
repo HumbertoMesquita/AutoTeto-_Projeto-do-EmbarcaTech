@@ -29,7 +29,7 @@ bool teto_fechado = false; // Estado inicial (teto aberto)
 
 // Função para enviar sinal RF
 void enviar_sinal_rf(bool fechar) {
-    printf("📡 Enviando sinal RF: %s\n", fechar ? "FECHAR" : "ABRIR");
+    printf("Enviando sinal RF: %s\n", fechar ? "FECHAR" : "ABRIR");
 
     // Simula o envio de sinal (pode ser adaptado para bibliotecas RF reais)
     for (int i = 0; i < 5; i++) {
@@ -126,7 +126,7 @@ void conectar_wifi() {
     printf("Conectado ao Wi-Fi!\n");
 
     // Obtém e exibe o IP local do Pico W
-    printf("🌍 IP Local: %s\n", ip4addr_ntoa(netif_ip4_addr(netif_default)));
+    printf("IP Local: %s\n", ip4addr_ntoa(netif_ip4_addr(netif_default)));
 }
 
 // Configuração inicial
